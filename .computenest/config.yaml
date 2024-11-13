@@ -12,7 +12,7 @@ Service:
   DeployMetadata:
     SupplierDeployMetadata:
       FileArtifactRelation:
-        '{{ computenest::file::Alicloud-ComputeNest_lobe-chat-docker-compose }}':
+        '{{ computenest::file::JJGGu_lobe-chat-docker-compose }}':
           ArtifactId: ${Artifact.Artifact_1.ArtifactId}
           ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
     TemplateConfigs:
@@ -30,67 +30,55 @@ Service:
 Artifact:
   Artifact_1:
     ArtifactType: File
-    ArtifactName: Alicloud-ComputeNest_lobe-chat-docker-compose
+    ArtifactName: JJGGu_lobe-chat-docker-compose
     ArtifactProperty:
       RegionId: cn-hangzhou
       Url: 'resources/artifact_resources/docker_compose.tar'
   Artifact_2:
     ArtifactType: AcrImage
-    ArtifactName: alpine
+    ArtifactName: AcrImage-pgvector-pgvector
     ArtifactProperty:
       RepoName: ${AcrImageBuilder.AcrImage_1.RepoName}
       Tag: ${AcrImageBuilder.AcrImage_1.Tag}
       RepoType: Public
   Artifact_3:
     ArtifactType: AcrImage
-    ArtifactName: pgvector-pgvector
+    ArtifactName: AcrImage-minio-minio
     ArtifactProperty:
       RepoName: ${AcrImageBuilder.AcrImage_2.RepoName}
       Tag: ${AcrImageBuilder.AcrImage_2.Tag}
       RepoType: Public
   Artifact_4:
     ArtifactType: AcrImage
-    ArtifactName: minio-minio
+    ArtifactName: AcrImage-svhd-logto
     ArtifactProperty:
       RepoName: ${AcrImageBuilder.AcrImage_3.RepoName}
       Tag: ${AcrImageBuilder.AcrImage_3.Tag}
       RepoType: Public
   Artifact_5:
     ArtifactType: AcrImage
-    ArtifactName: casbin-casdoor
+    ArtifactName: AcrImage-lobehub-lobe-chat-database
     ArtifactProperty:
       RepoName: ${AcrImageBuilder.AcrImage_4.RepoName}
       Tag: ${AcrImageBuilder.AcrImage_4.Tag}
       RepoType: Public
-  Artifact_6:
-    ArtifactType: AcrImage
-    ArtifactName: lobehub-lobe-chat-database
-    ArtifactProperty:
-      RepoName: ${AcrImageBuilder.AcrImage_5.RepoName}
-      Tag: ${AcrImageBuilder.AcrImage_5.Tag}
-      RepoType: Public
 AcrImageBuilder:
   AcrImage_1:
-    BuildType: DockerRepo
-    DockerRepoUrl: alpine
-    RepoName: alpine
-    Tag: latest
-  AcrImage_2:
     BuildType: DockerRepo
     DockerRepoUrl: pgvector/pgvector:pg16
     RepoName: pgvector/pgvector
     Tag: pg16
-  AcrImage_3:
+  AcrImage_2:
     BuildType: DockerRepo
     DockerRepoUrl: minio/minio
     RepoName: minio/minio
     Tag: latest
-  AcrImage_4:
+  AcrImage_3:
     BuildType: DockerRepo
-    DockerRepoUrl: casbin/casdoor
-    RepoName: casbin/casdoor
+    DockerRepoUrl: svhd/logto
+    RepoName: svhd/logto
     Tag: latest
-  AcrImage_5:
+  AcrImage_4:
     BuildType: DockerRepo
     DockerRepoUrl: lobehub/lobe-chat-database
     RepoName: lobehub/lobe-chat-database

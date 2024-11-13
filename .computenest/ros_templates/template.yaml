@@ -1,7 +1,4 @@
 ROSTemplateFormatVersion: '2015-09-01'
-Description:
-  en: DockerCompose service template
-  zh-cn: DockerCompose服务模板
 Conditions:
   CreateVpcConditions:
     Fn::Equals:
@@ -224,7 +221,12 @@ Resources:
           - Ref: EcsVpc
           - Ref: VpcId
       SecurityGroupIngress:
-        - PortRange: ${MINIO_PORT}/${MINIO_PORT}
+        - PortRange: 5432/5432
+          Priority: 1
+          SourceCidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          NicType: internet
+        - PortRange: 9000/9000
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -234,17 +236,17 @@ Resources:
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: ${CASDOOR_PORT}/${CASDOOR_PORT}
+        - PortRange: 3001/3001
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: ${LOBE_PORT}/${LOBE_PORT}
+        - PortRange: 3002/3002
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 5432/5432
+        - PortRange: 3210/3210
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -296,15 +298,7 @@ Resources:
       CommandContent:
         Fn::Sub:
           - |
-            dockerJson='{{ computenest::acr::dockerconfigjson }}'
-            decodeDockerJson=$(echo $dockerJson | base64 -d)
-            host=$(echo $decodeDockerJson | jq '.auths' | jq 'keys' | jq .[0])
-            username=$(echo $decodeDockerJson | jq ".auths.$host.username" | tr -d '"')
-            password=$(echo $decodeDockerJson | jq ".auths.$host.password" | tr -d '"')
-            host=$(echo $host | tr -d '"')
-            docker login $host --username=$username --password=$password
-
-            wget '{{ computenest::file::Alicloud-ComputeNest_lobe-chat-docker-compose }}' -O /root/application/docker_compose.tar
+            wget '{{ computenest::file::JJGGu_lobe-chat-docker-compose }}' -O /root/application/docker_compose.tar
             tar -xvf /root/application/docker_compose.tar -C /root/application
 
             cat > /etc/systemd/system/docker-compose-app.service <<EOF
@@ -317,7 +311,7 @@ Resources:
             Type=oneshot
             RemainAfterExit=yes
             WorkingDirectory=/root/application/docker_compose
-            ExecStart=/usr/bin/docker compose -f docker-compose/local/docker-compose.yml up -d
+            ExecStart=/usr/bin/docker compose -f docker-compose/production/logto/docker-compose.yml up -d
             ExecStop=/usr/bin/docker compose down
             TimeoutStartSec=0
 
@@ -336,7 +330,7 @@ Outputs:
       zh-cn: 访问页面。
     Value:
       Fn::Sub:
-        - http://${ServerAddress}:${MINIO_PORT}, http://${ServerAddress}:9001, http://${ServerAddress}:${CASDOOR_PORT}, http://${ServerAddress}:${LOBE_PORT}, http://${ServerAddress}:5432
+        - http://${ServerAddress}:5432, http://${ServerAddress}:9000, http://${ServerAddress}:9001, http://${ServerAddress}:3001, http://${ServerAddress}:3002, http://${ServerAddress}:3210
         - ServerAddress:
             Fn::Select:
             - 0
