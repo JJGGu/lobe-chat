@@ -221,12 +221,17 @@ Resources:
           - Ref: EcsVpc
           - Ref: VpcId
       SecurityGroupIngress:
+        - PortRange: 8000/8000
+          Priority: 1
+          SourceCidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          NicType: internet
         - PortRange: 5432/5432
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 9000/9000
+        - PortRange: 3210/3210
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -236,17 +241,7 @@ Resources:
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 3001/3001
-          Priority: 1
-          SourceCidrIp: 0.0.0.0/0
-          IpProtocol: tcp
-          NicType: internet
-        - PortRange: 3002/3002
-          Priority: 1
-          SourceCidrIp: 0.0.0.0/0
-          IpProtocol: tcp
-          NicType: internet
-        - PortRange: 3210/3210
+        - PortRange: 9000/9000
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -311,7 +306,7 @@ Resources:
             Type=oneshot
             RemainAfterExit=yes
             WorkingDirectory=/root/application/docker_compose
-            ExecStart=/usr/bin/docker compose -f docker-compose/production/logto/docker-compose.yml up -d
+            ExecStart=/usr/bin/docker compose -f docker-compose/local/docker-compose.yml up -d
             ExecStop=/usr/bin/docker compose down
             TimeoutStartSec=0
 
@@ -320,23 +315,37 @@ Resources:
             EOF
 
             
+            systemctl enable docker-compose-app
             systemctl start docker-compose-app
           - RegionId:
               Ref: ALIYUN::Region
-Outputs:
-  ServerAddress:
+Outputs: 
+  network-service_address:
     Description:
-      en: ServerAddress.
-      zh-cn: 访问页面。
+      en: network-service address.
+      zh-cn: network-service 访问页面。
     Value:
       Fn::Sub:
-        - http://${ServerAddress}:5432, http://${ServerAddress}:9000, http://${ServerAddress}:9001, http://${ServerAddress}:3001, http://${ServerAddress}:3002, http://${ServerAddress}:3210
+        - http://${ServerAddress}:3210, http://${ServerAddress}:9001, http://${ServerAddress}:8000, http://${ServerAddress}:9000
         - ServerAddress:
             Fn::Select:
-            - 0
-            - Fn::GetAtt:
-              - InstanceGroup
-              - PublicIps
+              - 0
+              - Fn::GetAtt:
+                  - InstanceGroup
+                  - PublicIps
+  postgresql_address:
+    Description:
+      en: postgresql address.
+      zh-cn: postgresql 访问页面。
+    Value:
+      Fn::Sub:
+        - http://${ServerAddress}:5432
+        - ServerAddress:
+            Fn::Select:
+              - 0
+              - Fn::GetAtt:
+                  - InstanceGroup
+                  - PublicIps
 Metadata:
   ALIYUN::ROS::Interface:
     ParameterGroups:
