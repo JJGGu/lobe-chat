@@ -226,7 +226,7 @@ Resources:
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 5432/5432
+        - PortRange: 9000/9000
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -241,7 +241,7 @@ Resources:
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 9000/9000
+        - PortRange: 5432/5432
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -296,7 +296,7 @@ Resources:
             wget '{{ computenest::file::JJGGu_lobe-chat-docker-compose }}' -O /root/application/docker_compose.tar
             tar -xvf /root/application/docker_compose.tar -C /root/application
 
-            cat > /etc/systemd/system/docker-compose-app.service <<EOF
+            cat > /etc/systemd/system/lobe-chat.service <<EOF
             [Unit]
             Description=Docker Compose Application Service
             Requires=docker.service
@@ -314,9 +314,10 @@ Resources:
             WantedBy=multi-user.target
             EOF
 
+            systemctl enable lobe-chat
+
             
-            systemctl enable docker-compose-app
-            systemctl start docker-compose-app
+            systemctl start lobe-chat
           - RegionId:
               Ref: ALIYUN::Region
 Outputs: 
@@ -326,7 +327,7 @@ Outputs:
       zh-cn: network-service 访问页面。
     Value:
       Fn::Sub:
-        - http://${ServerAddress}:3210, http://${ServerAddress}:9001, http://${ServerAddress}:8000, http://${ServerAddress}:9000
+        - http://${ServerAddress}:8000, http://${ServerAddress}:3210, http://${ServerAddress}:9001, http://${ServerAddress}:9000
         - ServerAddress:
             Fn::Select:
               - 0
