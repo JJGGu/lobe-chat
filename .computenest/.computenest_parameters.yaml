@@ -1,1 +1,0 @@
-{"ServiceType":"private","AllowedRegions":["cn-hangzhou","cn-shanghai","cn-beijing"],"ArtifactSourceType":"DockerCompose","RepoName":"JJGGu/lobe-chat","Arch":"EcsSingle","DockerComposeEnvPath":"docker-compose/local/.env.example","RegionId":"ap-southeast-1","CustomParameters":"","DockerComposeYamlPath":"docker-compose/local/docker-compose.yml"}
