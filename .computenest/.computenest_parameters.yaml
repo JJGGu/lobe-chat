@@ -1,0 +1,12 @@
+Owner: JJGGu
+Platform: github
+ServiceType: private
+Branch: main
+AllowedRegions:
+- ap-southeast-1
+ArtifactSourceType: DockerCompose
+RepoName: JJGGu/lobe-chat
+DockerComposeEnvPath: docker-compose/local/logto/.env.example
+RegionId: cn-hangzhou
+CustomParameters: ''
+DockerComposeYamlPath: docker-compose/local/logto/docker-compose.yml
