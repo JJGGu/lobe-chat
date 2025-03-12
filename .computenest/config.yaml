@@ -64,10 +64,10 @@ Artifact:
       CommandContent: |-
         mkdir -p /root/application
         mkdir -p "/root/application/docker-compose/production/logto"
-        if [ -e "/root/code/docker-compose/production/logto/docker-compose.yml" ]; then cp -r "/root/code/docker-compose/production/logto/docker-compose.yml" "/root/application/docker-compose/production/logto/"; fi
+        if [ -e "/root/code/docker-compose/production/logto/data" ]; then cp -r "/root/code/docker-compose/production/logto/data" "/root/application/docker-compose/production/logto/"; fi
         if [ -e "/root/code/docker-compose/production/logto/s3_data" ]; then cp -r "/root/code/docker-compose/production/logto/s3_data" "/root/application/docker-compose/production/logto/"; fi
         if [ -e "/root/code/docker-compose/production/logto/.env.example" ]; then cp -r "/root/code/docker-compose/production/logto/.env.example" "/root/application/docker-compose/production/logto/"; fi
-        if [ -e "/root/code/docker-compose/production/logto/data" ]; then cp -r "/root/code/docker-compose/production/logto/data" "/root/application/docker-compose/production/logto/"; fi
+        if [ -e "/root/code/docker-compose/production/logto/docker-compose.yml" ]; then cp -r "/root/code/docker-compose/production/logto/docker-compose.yml" "/root/application/docker-compose/production/logto/"; fi
         cd /root/application
         cp docker-compose/production/logto/.env.example docker-compose/production/logto/.env
         sed -i 's/pull_policy: always/pull_policy: if_not_present/g' docker-compose/production/logto/docker-compose.yml

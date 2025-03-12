@@ -5,6 +5,7 @@ ServiceBuildRegion: ap-southeast-1
 RepoName: JJGGu/lobe-chat
 DockerComposeEnvPath: docker-compose/production/logto/.env.example
 RegionId: cn-hangzhou
+CustomParameters: ''
 DockerComposeYamlPath: docker-compose/production/logto/docker-compose.yml
 Owner: JJGGu
 Branch: main

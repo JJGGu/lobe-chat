@@ -228,17 +228,22 @@ Resources:
           - Ref: EcsVpc
           - Ref: VpcId
       SecurityGroupIngress:
+        - PortRange: 3210/3210
+          Priority: 1
+          SourceCidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          NicType: internet
         - PortRange: 5432/5432
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 9000/9000
+        - PortRange: 3002/3002
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
           NicType: internet
-        - PortRange: 3002/3002
+        - PortRange: 9000/9000
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -249,11 +254,6 @@ Resources:
           IpProtocol: tcp
           NicType: internet
         - PortRange: 3001/3001
-          Priority: 1
-          SourceCidrIp: 0.0.0.0/0
-          IpProtocol: tcp
-          NicType: internet
-        - PortRange: 3210/3210
           Priority: 1
           SourceCidrIp: 0.0.0.0/0
           IpProtocol: tcp
@@ -420,7 +420,7 @@ Outputs:
       zh-cn: minio 访问页面。
     Value:
       Fn::Sub:
-        - http://${ServerAddress}:9000,http://${ServerAddress}:9001
+        - http://${ServerAddress}:9001,http://${ServerAddress}:9000
         - ServerAddress:
             Fn::Select:
               - 0
